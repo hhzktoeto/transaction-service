@@ -16,9 +16,9 @@ public class CategoryService {
 
     @Cacheable(value = "categories", key = "#name")
     public Category findByName(String name) {
-        log.info("Trying to find category by name {}", name);
+        log.debug("Trying to find category by name {}", name);
         return repository.findByName(name).orElseGet(() -> {
-            log.info("Category not found in DB. Creating new category");
+            log.debug("Category not found in DB. Creating new category");
             Category category = new Category();
             category.setName(name);
             return repository.save(category);

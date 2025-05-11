@@ -26,7 +26,7 @@ logging:
     database: liquibase, org.hibernate, com.zaxxer
     http: org.apache.coyote, org.apache.catalina
   level:
-    myapp: trace
+    myapp: debug
     spring: warn
     database: warn
     http: warn

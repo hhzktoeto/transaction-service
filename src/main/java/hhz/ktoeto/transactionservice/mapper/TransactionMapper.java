@@ -3,10 +3,7 @@ package hhz.ktoeto.transactionservice.mapper;
 import hhz.ktoeto.transactionservice.model.dto.TransactionDTO;
 import hhz.ktoeto.transactionservice.model.entity.Category;
 import hhz.ktoeto.transactionservice.model.entity.Transaction;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +16,10 @@ public interface TransactionMapper {
 
     @Mapping(target = "category", ignore = true)
     Transaction toEntity(TransactionDTO transactionDTO);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "category", ignore = true)
+    void updateEntity(@MappingTarget Transaction transaction, TransactionDTO transactionDTO);
 
     @Named("mapCategory")
     default String mapCategory(Category category) {

@@ -19,8 +19,23 @@ public class TransactionController {
         return service.getAll();
     }
 
+    @GetMapping("/{id}")
+    public TransactionDTO getById(@PathVariable long id) {
+        return service.getById(id);
+    }
+
     @PostMapping
     public TransactionDTO create(@RequestBody TransactionDTO dto) {
         return service.create(dto);
+    }
+
+    @PutMapping
+    public TransactionDTO update(@RequestBody TransactionDTO dto) {
+        return service.update(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) {
+        service.delete(id);
     }
 }

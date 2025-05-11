@@ -1,5 +1,6 @@
 package hhz.ktoeto.transactionservice.service;
 
+import hhz.ktoeto.transactionservice.exception.EntityNotFoundException;
 import hhz.ktoeto.transactionservice.mapper.TransactionMapper;
 import hhz.ktoeto.transactionservice.model.dto.TransactionDTO;
 import hhz.ktoeto.transactionservice.model.entity.Category;
@@ -23,8 +24,15 @@ public class TransactionService {
 
     @Transactional
     public List<TransactionDTO> getAll() {
+        log.debug("Fetching all transactions ");
         List<Transaction> transactions = repository.findAll();
         return transactions.stream().map(mapper::toDto).toList();
+    }
+
+    @Transactional
+    public TransactionDTO getById(long id) {
+        Transaction transaction = getTransactionFromRepository(id);
+        return mapper.toDto(transaction);
     }
 
     @Transactional
@@ -36,5 +44,29 @@ public class TransactionService {
         Transaction saved = repository.save(transaction);
 
         return mapper.toDto(saved);
+    }
+
+    @Transactional
+    public TransactionDTO update(TransactionDTO dto) {
+        Transaction transaction = getTransactionFromRepository(dto.id());
+
+        mapper.updateEntity(transaction, dto);
+        if (!transaction.getCategory().getName().equals(dto.category())) {
+            Category category = categoryService.findByName(dto.category());
+            transaction.setCategory(category);
+        }
+
+        return mapper.toDto(repository.save(transaction));
+    }
+
+    @Transactional
+    public void delete(long id) {
+        Transaction transaction = getTransactionFromRepository(id);
+        repository.delete(transaction);
+    }
+
+    private Transaction getTransactionFromRepository(long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Could not find Transaction with id %s".formatted(id)));
     }
 }
