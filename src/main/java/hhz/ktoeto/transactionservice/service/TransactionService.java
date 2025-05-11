@@ -2,6 +2,7 @@ package hhz.ktoeto.transactionservice.service;
 
 import hhz.ktoeto.transactionservice.mapper.TransactionMapper;
 import hhz.ktoeto.transactionservice.model.dto.TransactionDTO;
+import hhz.ktoeto.transactionservice.model.entity.Category;
 import hhz.ktoeto.transactionservice.model.entity.Transaction;
 import hhz.ktoeto.transactionservice.repository.TransactionsRepository;
 import jakarta.transaction.Transactional;
@@ -17,11 +18,23 @@ import java.util.List;
 public class TransactionService {
 
     private final TransactionMapper mapper;
+    private final CategoryService categoryService;
     private final TransactionsRepository repository;
 
     @Transactional
     public List<TransactionDTO> getAll() {
         List<Transaction> transactions = repository.findAll();
         return transactions.stream().map(mapper::toDto).toList();
+    }
+
+    @Transactional
+    public TransactionDTO create(TransactionDTO dto) {
+        Category category = categoryService.findByName(dto.category());
+        Transaction transaction = mapper.toEntity(dto);
+        transaction.setCategory(category);
+
+        Transaction saved = repository.save(transaction);
+
+        return mapper.toDto(saved);
     }
 }

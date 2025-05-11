@@ -17,6 +17,9 @@ public interface TransactionMapper {
     @Mapping(target = "type", source = "type", qualifiedByName = "mapType")
     TransactionDTO toDto(Transaction transaction);
 
+    @Mapping(target = "category", ignore = true)
+    Transaction toEntity(TransactionDTO transactionDTO);
+
     @Named("mapCategory")
     default String mapCategory(Category category) {
         return category.getName();
