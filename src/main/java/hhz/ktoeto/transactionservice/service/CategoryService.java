@@ -1,5 +1,7 @@
 package hhz.ktoeto.transactionservice.service;
 
+import hhz.ktoeto.transactionservice.mapper.CategoryMapper;
+import hhz.ktoeto.transactionservice.model.dto.CategoryDTO;
 import hhz.ktoeto.transactionservice.model.entity.Category;
 import hhz.ktoeto.transactionservice.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,11 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
 
+    private final CategoryMapper mapper;
     private final CategoryRepository repository;
 
     @Cacheable(value = "categories", key = "#name")
@@ -23,5 +28,9 @@ public class CategoryService {
             category.setName(name);
             return repository.save(category);
         });
+    }
+    
+    public List<CategoryDTO> findAll() {
+        return repository.findAll().stream().map(mapper::toDto).toList();
     }
 }

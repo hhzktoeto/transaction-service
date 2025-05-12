@@ -6,9 +6,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record TransactionDTO(
-        Long id,
+        long id,
         @JsonProperty("user_id")
-        Long userId,
+        long userId,
         String type,
         String category,
         LocalDate date,

@@ -24,14 +24,14 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    private Long id;
+    private long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "TYPE", nullable = false, length = 10)
     private Type type;
 
     @Column(name = "USER_ID", nullable = false)
-    private Long userId;
+    private long userId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.RESTRICT)
