@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/changelog/changes/transactions_V000__initial.sql
+  - include:
+      file: db/changelog/changes/transactions_V001__added-creation-timestamp.sql
