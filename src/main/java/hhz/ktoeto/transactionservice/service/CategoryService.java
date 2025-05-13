@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -23,11 +24,16 @@ public class CategoryService {
     public Category findByName(String name) {
         log.debug("Trying to find category by name {}", name);
         return repository.findByName(name).orElseGet(() -> {
-            log.debug("Category not found in DB. Creating new category");
             Category category = new Category();
             category.setName(name);
             return repository.save(category);
         });
+    }
+
+    public CategoryDTO add(CategoryDTO dto) {
+        log.debug("Creating new category: {}", dto.name());
+        Category category = mapper.toEntity(dto);
+        return mapper.toDto(repository.save(category));
     }
     
     public List<CategoryDTO> findAll() {

@@ -9,4 +9,6 @@ import org.mapstruct.ReportingPolicy;
 public interface CategoryMapper {
 
     CategoryDTO toDto(Category category);
+
+    Category toEntity(CategoryDTO categoryDTO);
 }
