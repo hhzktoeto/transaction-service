@@ -9,7 +9,6 @@ import hhz.ktoeto.transactionservice.repository.TransactionsRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +25,9 @@ public class TransactionService {
     @Transactional
     public List<TransactionDTO> getAll() {
         log.debug("Fetching all transactions ");
-        List<Transaction> transactions = repository.findAll(Sort.by(Sort.Order.desc("date"), Sort.Order.desc("createdAt")));
-        return transactions.stream().map(mapper::toDto).toList();
+        return repository.findAll()
+                .stream()
+                .map(mapper::toDto).toList();
     }
 
     @Transactional

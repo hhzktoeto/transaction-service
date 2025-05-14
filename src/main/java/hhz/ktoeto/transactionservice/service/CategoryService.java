@@ -10,7 +10,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -37,6 +36,9 @@ public class CategoryService {
     }
     
     public List<CategoryDTO> findAll() {
-        return repository.findAll().stream().map(mapper::toDto).toList();
+        return repository.findAll()
+                .stream()
+                .map(mapper::toDto)
+                .toList();
     }
 }
