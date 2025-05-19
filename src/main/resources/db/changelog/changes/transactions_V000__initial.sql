@@ -1,12 +1,14 @@
 CREATE TABLE categories
 (
-    id   BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL
+    id   BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY UNIQUE,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    created_at timestamptz DEFAULT current_timestamp,
+    updated_at timestamptz DEFAULT current_timestamp
 );
 
 CREATE TABLE transactions
 (
-    id          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    id          BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY UNIQUE,
     type        VARCHAR(10)    NOT NULL
         CHECK (type IN ('INCOME', 'EXPENSE')),
     user_id     BIGINT         NOT NULL,
@@ -14,5 +16,8 @@ CREATE TABLE transactions
     date        DATE           NOT NULL,
     amount      DECIMAL(12, 2) NOT NULL,
     description VARCHAR(1000),
-    FOREIGN KEY (category_id) REFERENCES categories (id)
+    created_at timestamptz DEFAULT current_timestamp,
+    updated_at timestamptz DEFAULT current_timestamp,
+
+    CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES categories (id)
 );

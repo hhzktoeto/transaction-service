@@ -21,15 +21,15 @@ repositories {
 dependencies {
     val lombokVersion = "1.18.38"
     val liquibaseVersion = "4.31.1"
-    val h2Version = "2.3.232"
+    val postgresDriverVersion = "42.7.5"
     val jacksonDatatypeVersion = "2.19.0"
     val mapstructVersion = "1.6.3"
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonDatatypeVersion")
-    implementation("org.liquibase:liquibase-core:$liquibaseVersion")
-    implementation("com.h2database:h2:$h2Version")
+    implementation("org.liquibase:liquibase-core:$liquibaseVersion")// https://mvnrepository.com/artifact/org.postgresql/postgresql
+    implementation("org.postgresql:postgresql:$postgresDriverVersion")
     implementation("org.projectlombok:lombok:$lombokVersion")
     implementation("org.mapstruct:mapstruct:$mapstructVersion")
 
