@@ -6,7 +6,6 @@ import hhz.ktoeto.transactionservice.model.entity.Category;
 import hhz.ktoeto.transactionservice.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,6 @@ public class CategoryService {
     private final CategoryMapper mapper;
     private final CategoryRepository repository;
 
-    @Cacheable(value = "categories", key = "#name")
     public Category findByName(String name) {
         log.debug("Trying to find category by name {}", name);
         return repository.findByName(name).orElseGet(() -> {
@@ -29,10 +27,15 @@ public class CategoryService {
         });
     }
 
-    public CategoryDTO add(CategoryDTO dto) {
+    public CategoryDTO create(CategoryDTO dto) {
         log.debug("Creating new category: {}", dto.name());
         Category category = mapper.toEntity(dto);
         return mapper.toDto(repository.save(category));
+    }
+
+    public void delete(long id) {
+        log.debug("Deleting category with id {}", id);
+        repository.deleteById(id);
     }
     
     public List<CategoryDTO> findAll() {

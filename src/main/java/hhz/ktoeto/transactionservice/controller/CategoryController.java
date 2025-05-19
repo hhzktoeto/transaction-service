@@ -24,6 +24,6 @@ public class CategoryController {
 
     @PostMapping
     public CategoryDTO add(CategoryDTO dto) {
-        return service.add(dto);
+        return service.create(dto);
     }
 }

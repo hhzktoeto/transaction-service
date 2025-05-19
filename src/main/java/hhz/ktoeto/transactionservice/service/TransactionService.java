@@ -1,5 +1,6 @@
 package hhz.ktoeto.transactionservice.service;
 
+import hhz.ktoeto.transactionservice.event.CheckCategoryUsageEvent;
 import hhz.ktoeto.transactionservice.exception.EntityNotFoundException;
 import hhz.ktoeto.transactionservice.mapper.TransactionMapper;
 import hhz.ktoeto.transactionservice.model.dto.TransactionDTO;
@@ -9,6 +10,7 @@ import hhz.ktoeto.transactionservice.repository.TransactionsRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class TransactionService {
     private final TransactionMapper mapper;
     private final CategoryService categoryService;
     private final TransactionsRepository repository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public List<TransactionDTO> getAll() {
@@ -57,13 +60,19 @@ public class TransactionService {
             transaction.setCategory(category);
         }
 
+        applicationEventPublisher.publishEvent(new CheckCategoryUsageEvent(this, transaction.getCategory()));
         return mapper.toDto(repository.save(transaction));
+    }
+
+    public boolean existsByCategoryId(long id) {
+        return repository.existsByCategoryId(id);
     }
 
     @Transactional
     public void delete(long id) {
         Transaction transaction = getTransactionFromRepository(id);
         repository.delete(transaction);
+        applicationEventPublisher.publishEvent(new CheckCategoryUsageEvent(this, transaction.getCategory()));
     }
 
     private Transaction getTransactionFromRepository(long id) {

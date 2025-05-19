@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TransactionsRepository extends JpaRepository<Transaction, Long> {
+
+    boolean existsByCategoryId(long categoryId);
 }
