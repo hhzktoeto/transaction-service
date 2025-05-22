@@ -4,7 +4,7 @@ spring:
   jpa:
     open-in-view: false
   datasource:
-    url: jdbc:postgresql://mnmngr-postgres:5432/appdb
+    url: jdbc:postgresql://10.78.16.20:5432/appdb
     username: admin
     password: JAS)F8g60KEGF)$
   liquibase:
