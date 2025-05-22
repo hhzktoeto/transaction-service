@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: transaction-service
+  jpa:
+    open-in-view: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/appdb
+    username: admin
+    password: JAS)F8g60KEGF)$
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+server:
+  port: 8081
+  servlet:
+    context-path: /api
+  tomcat:
+    max-http-form-post-size: 5MB
+
+logging:
+  group:
+    myapp: hhz
+    spring: org.springframework, org.springframework.web, org.springframework.boot
+    database: liquibase, org.hibernate, com.zaxxer
+    http: org.apache.coyote, org.apache.catalina
+  level:
+    myapp: debug
+    spring: warn
+    database: warn
+    http: warn
+  pattern:
+    console: '%d{dd.MM.YYYY HH:mm:ss.SSS} %highlight(%-5level) --- [%25thread] --- %-75logger{75} : %cyan(%msg%n)'
